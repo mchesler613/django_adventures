@@ -5,6 +5,7 @@ This article assumes a readership who is familiar with database schema design. [
 Today I'm going to focus on what model relationships are in Django, but first, a little introduction on database. The Django framework is designed to work with relational database engines in the back end such as [SQLite](https://sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [MySQL](https://www.mysql.com/) and [Oracle](https://www.oracle.com/index.html). However, support for non-relational database such as [MongoDb](https://www.mongodb.com/) is also possible through third-party connectors such as [Djongo](https://www.djongomapper.com/integrating-django-with-mongodb/). From a relational database perspective, data is organized as tables that may be related to one another in one of these associations: one-to-one, one-to-many, many-to-many.
 
 ## One-to-One Relationship
+![One-to-One Relationships](https://i.postimg.cc/Ls3vCGBq/OneToOne.png)
 Examples of a one-to-one relationship are plenty in the real world. Consider these scenarios:
 1. A user profile in a web application is  associated with a unique email address. Some web applications, such as PayPal and LinkedIn, allow a user to have multiple email addresses, but many, such as social media, banking and online shopping, restrict an email address to only one user.
 2. A citizen of a country is associated with a passport. Not every citizen requires a passport but if they want to travel outside the country, they must be issued a passport. 
