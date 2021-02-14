@@ -5,12 +5,9 @@ This article assumes a readership who is familiar with database schema design. [
 Today I'm going to focus on what model relationships are in Django, but first, a little introduction on database. The Django framework is designed to work with relational database engines in the back end such as [SQLite](https://sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [MySQL](https://www.mysql.com/) and [Oracle](https://www.oracle.com/index.html). However, support for non-relational database such as [MongoDb](https://www.mongodb.com/) is also possible through third-party connectors such as [Djongo](https://www.djongomapper.com/integrating-django-with-mongodb/). From a relational database perspective, data is organized as tables that may be related to one another in one of these associations: one-to-one, one-to-many, many-to-many.
 
 ## One-to-One Relationship
-
 Examples of a one-to-one relationship are plenty in the real world. Consider these scenarios:
 1. A user profile in a web application is  associated with a unique email address. Some web applications, such as PayPal and LinkedIn, allow a user to have multiple email addresses, but many, such as social media, banking and online shopping, restrict an email address to only one user.
-
 2. A citizen of a country is associated with a passport. Not every citizen requires a passport but if they want to travel outside the country, they must be issued a passport. 
-
 3. An ISBN number is associated with a book, but a book does not have to acquire an ISBN number in order for it to be published. 
 
 In general, to implement a table that is related to another table, a [_FOREIGN KEY_](https://docs.microsoft.com/en-us/previous-versions/sql/sql-server-2008-r2/ms175464(v=sql.105)) designation is assigned to a column to bind the two tables together. In SQL, to implement a one-to-one relationship between two tables, another designation, [_UNIQUE_](https://www.relationaldbdesign.com/database-design/module6/one-to-oneRelationships.php), is usually added to the foreign key column as well. 
@@ -35,7 +32,6 @@ class Isbn(models.Model):
 In the code example above, we place the `OneToOneField` in the `Isbn` model assigned to the field named, `book`.  Let's investigate the next type of relationship.
 
 ## One-to-Many Relationship
-
 Like one-to-one, real world objects may be linked with one another via a one-to-many or many-to-one relationship. Consider these scenarios:
 1. A person may have one or more social media accounts, but a social media account may only be linked to one person.
 2. A country may have many ambassadors stationed in different countries, but each ambassador may only represent one country.
@@ -66,7 +62,6 @@ class Book(models.Model):
 In the code example above, the `author` field houses the `ForeignKey` field type to show that a `Book` must be associated with an `Author`.  Let's explore the last type of relationship.
 
 ## Many-to-Many Relationship
-
 Examples of many-to-many relationship abound in the real world as well. Consider these scenarios:
 1. A customer may subscribe to many publications, while a publication may have many subscribers.
 2. A person may join many clubs, while a club may have many members.
@@ -94,5 +89,4 @@ class Recipe(models.Model):
 From the code example above, both `Ingredient` and `Recipe` are related by having a many-to-many relationship. The `ManyToManyField` field type is placed in `Recipe` assigned to `ingredients`, but it could also be placed in `Ingredient` and assigned to a field, such as `recipes`.
 
 ## Conclusion
-
 The Django framework provides solutions to implement the classic relationships between objects via the `OneToOneField`, `ForeignKey` and `ManyToManyField`. The choice to use the name `ForeignKey` instead of `OneToManyField` or `ManyToOneField` often raises confusion as it breaks the convention of the other two related field types. This article hopefully dispels the confusion among new Django developers.
