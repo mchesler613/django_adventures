@@ -5,7 +5,9 @@ This article assumes a readership who is familiar with database schema design. [
 Today I'm going to focus on what model relationships are in Django, but first, a little introduction on database. The Django framework is designed to work with relational database engines in the back end such as [SQLite](https://sqlite.org/index.html), [PostgreSQL](https://www.postgresql.org/), [MySQL](https://www.mysql.com/) and [Oracle](https://www.oracle.com/index.html). However, support for non-relational database such as [MongoDb](https://www.mongodb.com/) is also possible through third-party connectors such as [Djongo](https://www.djongomapper.com/integrating-django-with-mongodb/). From a relational database perspective, data is organized as tables that may be related to one another in one of these associations: one-to-one, one-to-many, many-to-many.
 
 ## One-to-One Relationship
-![One-to-One Relationships](https://i.postimg.cc/Ls3vCGBq/OneToOne.png)
+
+![One to One Relationship](https://i.postimg.cc/Qdb84w04/One-to-One.png)
+
 Examples of a one-to-one relationship are plenty in the real world. Consider these scenarios:
 1. A user profile in a web application is  associated with a unique email address. Some web applications, such as PayPal and LinkedIn, allow a user to have multiple email addresses, but many, such as social media, banking and online shopping, restrict an email address to only one user.
 2. A citizen of a country is associated with a passport. Not every citizen requires a passport but if they want to travel outside the country, they must be issued a passport. 
@@ -33,6 +35,9 @@ class Isbn(models.Model):
 In the code example above, we place the `OneToOneField` in the `Isbn` model assigned to the field named, `book`.  Let's investigate the next type of relationship.
 
 ## One-to-Many Relationship
+
+![One to Many Relationship](https://i.postimg.cc/0NX8xmg7/One-to-Many.png)
+
 Like one-to-one, real world objects may be linked with one another via a one-to-many or many-to-one relationship. Consider these scenarios:
 1. A person may have one or more social media accounts, but a social media account may only be linked to one person.
 2. A country may have many ambassadors stationed in different countries, but each ambassador may only represent one country.
@@ -63,6 +68,9 @@ class Book(models.Model):
 In the code example above, the `author` field houses the `ForeignKey` field type to show that a `Book` must be associated with an `Author`.  Let's explore the last type of relationship.
 
 ## Many-to-Many Relationship
+
+![Many to Many Relationship](https://i.postimg.cc/Z5ZYL4Fv/Many-To-Many.png)
+
 Examples of many-to-many relationship abound in the real world as well. Consider these scenarios:
 1. A customer may subscribe to many publications, while a publication may have many subscribers.
 2. A person may join many clubs, while a club may have many members.
