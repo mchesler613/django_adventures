@@ -27,8 +27,8 @@ There is a lot of information presented in the Django template. Let's examine ea
 + The name, `Raya`, is saved in a `Person` model instance. 
 + The email, `raya@djangoschool.com` is saved in an `Email` model instance.
 + The image and the text, `Project Manager Extraordinaire`, are saved in a `Bio` model instance.
-+ The `Tasks Due Today` information is saved in a `Task` model instance.
-+ The `Today's Meetings` information is saved in a `Meeting` model instance.
++ The `Tasks Due Today` information is saved in one or more `Task` model instances.
++ The `Today's Meetings` information is saved in one or more `Meeting` model instances.
 
 Let's explore what the Django view does to compile all this information.
 
@@ -94,7 +94,7 @@ context
  'tasks_due_today': <QuerySet []>,
  'view': <planner.views.PersonDetailView object at 0x0000000004A6B970>}
 ```
-Notice that `meetings_today` and `tasks_due_today` have been added to the `context`. They are each assigned `QuerySet` of `Meetin`g and `Task` model instances respectively.
+Notice that `meetings_today` and `tasks_due_today` have been added to the `context`. They are each assigned a `QuerySet` of `Meetin`g and `Task` model instances respectively.
 
 ## Conclusion
-We can apply useful object-oriented techniques such as adding custom methods when implementing our Django models and inheriting our views from Django's class-based generic views. By leverage our knowledge of object-oriented design and programming, we can save a lot of precious time from reusing and reducing the code we write and simplify our code maintenance. If you have benefited from this article, kindly give positive feedback and share with others too.  Thank you for reading!
+We can apply useful object-oriented techniques such as adding custom methods when implementing our Django models and inheriting our views from Django's class-based generic views. By leveraging our knowledge of object-oriented design and programming, we can save a lot of precious time from reusing and reducing the code we write and simplifying our code maintenance. If you have benefited from this article, kindly give positive feedback and share with others too.  Thank you for reading!
