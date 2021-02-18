@@ -34,7 +34,7 @@ Let's explore what the Django view does to compile all this information.
 
 ## Django View
 
-Django provides two ways to implement views -- function or class. In this app, the Django view was implemented using a class, `PersonDetailView`, that derives from Django's class-based generic view, [`DetailView`](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/). Django provides generic views such as `DetailView` and `ListView` because they are common views for present detailed information or a directory listing. The main benefits of inheriting a class-based view is to reuse code whenever possible and focus on the specific needs of our application.
+Django provides two ways to implement views -- function or class. In this app, the Django view was implemented using a class, `PersonDetailView`, that derives from Django's class-based generic view, [`DetailView`](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/). Django provides generic views such as `DetailView` and `ListView` because they are common views for presenting detailed information or a directory listing. The main benefits of inheriting a class-based view is to reuse code whenever possible and focus on the specific needs of our application.
 
 Earlier, I mentioned that the view and the template are tightly coupled. This means that the template does not interact with the model at all and uses whatever information it needs to display from the view itself. This information is captured in a Python dictionary of key-value pairs returned by the generic view's method, [`.get_context_data()`](https://docs.djangoproject.com/en/3.1/ref/class-based-views/mixins-single-object/#django.views.generic.detail.SingleObjectMixin.get_context_data), also known as the `context`. A sample `context` may have the following information:
 ```py
@@ -81,7 +81,7 @@ class Person(models.Model):
   def meetings_today(self):
     return self.meeting_set.filter(participants__name=self.name).filter(date=date.today())
 ```
-By encapsulating calls to the [Django Model QuerySet API](https://docs.djangoproject.com/en/3.1/ref/models/querysets/) within the model as much as possible, we promote modularity and code reuse. Remember that adding methods to a Django model does not require any database migration as doing so doesn't affect the database schema at all.  
+By encapsulating calls to the [Django Model QuerySet API](https://docs.djangoproject.com/en/3.1/ref/models/querysets/) within the model as much as possible, we promote modularization and code reuse. Remember that adding methods to a Django model does not require any database migration as doing so doesn't affect the database schema at all.  
 
 Notice also the statement, `assert False`, that is commented in the code sample above. This statement is useful for debugging and will display traceback information on your browser even if there is no error. You can obtain the `context` information that is passed from the view to the template in the traceback. 
 
@@ -94,7 +94,7 @@ context
  'tasks_due_today': <QuerySet []>,
  'view': <planner.views.PersonDetailView object at 0x0000000004A6B970>}
 ```
-Notice that `meetings_today` and `tasks_due_today` have been added to the `context`.
+Notice that `meetings_today` and `tasks_due_today` have been added to the `context`. They are each assigned `QuerySet` of `Meetin`g and `Task` model instances respectively.
 
 ## Conclusion
 We can apply useful object-oriented techniques such as adding custom methods when implementing our Django models and inheriting our views from Django's class-based generic views. By leverage our knowledge of object-oriented design and programming, we can save a lot of precious time from reusing and reducing the code we write and simplify our code maintenance. If you have benefited from this article, kindly give positive feedback and share with others too.  Thank you for reading!
