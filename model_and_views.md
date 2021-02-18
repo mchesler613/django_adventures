@@ -94,7 +94,7 @@ context
  'tasks_due_today': <QuerySet []>,
  'view': <planner.views.PersonDetailView object at 0x0000000004A6B970>}
 ```
-Notice that `meetings_today` and `tasks_due_today` have been added to the `context`. They are each assigned a `QuerySet` of `Meetin`g and `Task` model instances respectively.
+Notice that `meetings_today` and `tasks_due_today` have been added to the `context`. They are each assigned a `QuerySet` of `Meeting` and `Task` model instances respectively.
 
 ## Conclusion
 We can apply useful object-oriented techniques such as adding custom methods when implementing our Django models and inheriting our views from Django's class-based generic views. By leveraging our knowledge of object-oriented design and programming, we can save a lot of precious time from reusing and reducing the code we write and simplifying our code maintenance. If you have benefited from this article, kindly give positive feedback and share with others too.  Thank you for reading!
