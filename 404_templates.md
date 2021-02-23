@@ -17,7 +17,7 @@ myproject
    |----migrations
    |--myproject
    |----__pycache__
-   |--templates     <==
+   |----templates     <==
 ```
 
 We also need to make sure the `DIRS` key in the `TEMPLATES` variable in our project's **settings.py** file is not an empty list.
@@ -54,10 +54,16 @@ myproject
    |------planner
    |--myproject
    |----__pycache__
-   |--templates     
+   |----templates     
 ```
 
-Having two versions of **404.html** residing in two different **templates** directories (root and app) may be helpful, but we have to configure our project's **settings.py** file to let Django know which version we want displayed on our website.  If we want the app's **404.html** to take over, then we need to reset the `DIRS` key back to an empty list, `[]`.
+Having two instances of **404.html** residing in two different **templates** directories (root and app) such as this:
+```
+$ find . -name 404.html
+./myproject/myapp/templates/404.html
+./myproject/myproject/templates/404.html
+```
+may be helpful but we have to configure our project's **settings.py** file to let Django know which instance we prefer.  If we want the app's **404.html** to take over, then we need to reset the `DIRS` key back to an empty list, `[]`.
 
 ```py
 TEMPLATES = [
@@ -79,4 +85,4 @@ TEMPLATES = [
 ![Custom 404 Page](https://i.postimg.cc/xTrjHwYk/app-404-2021-02-22-19-10-24.jpg)
 
 ## Conclusion
-Django makes it rather easy to customize error pages besides **404.html**. We can also provide custom **400.html**, **403.html** and **500.html** pages for HTTP `Bad Request`, `Forbidden` and `Internal Server Error` [error codes](https://docs.djangoproject.com/en/3.1/ref/views/) respectively. Thank you for reading!
+Django makes it rather straightforward to customize error pages besides **404.html**. We can also provide custom **400.html**, **403.html** and **500.html** pages for HTTP `Bad Request`, `Forbidden` and `Internal Server Error` [error codes](https://docs.djangoproject.com/en/3.1/ref/views/) respectively. Thank you for reading and Happy Django!
