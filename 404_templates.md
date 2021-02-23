@@ -38,7 +38,7 @@ TEMPLATES = [
     },
 ]
 ```
-Notice in the above example that the `DIRS` key is assigned a concatenated string of the `BASE_DIR` value and `myproject/templates`. After restarting our Django server and entering an invalid url on our browser, we will see our custom `404` page displayed.
+Notice in the above example that the `DIRS` key is assigned a concatenated string of the `BASE_DIR` value and `myproject/templates`. The `BASE_DIR` is the directory path that contains **manage.py**. After restarting our Django server and entering an invalid url on our browser, we will see our custom `404` page displayed.
 
 ![Custom 404 Page](https://i.postimg.cc/wMH5RtbF/project-404-2021-02-22-19-12-07.jpg)
 
