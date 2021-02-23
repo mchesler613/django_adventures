@@ -1,15 +1,16 @@
 # Adventures in Django: Customizing 404 templates
 
 ![Custom 404 Page](https://i.postimg.cc/wMH5RtbF/project-404-2021-02-22-19-12-07.jpg)
-There are many [HTTP status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) that can be returned from a web server; one of them is the infamous `404 Not found` error code. Django handles the `Http404` exception by displaying a default error page for our application. 
+There are many [HTTP status codes](https://en.wikipedia.org/wiki/List_of_HTTP_status_codes) that can be returned from a web server; one of them is the infamous `404 Not found` error code. This error is raised when a particular page cannot be located on the website. Django handles the `Http404` exception by displaying a default error page for our application. 
 
-If we set the option `DEBUG=True` in our project's **settings.py** file, we will see this.
+If we set the option `DEBUG=True` in our project's **settings.py** file, we will see something like this.
 ![404 Debug=True](https://i.postimg.cc/jd8TRZRj/DEBUG-TRUE-404-2021-02-22-19-15-55.jpg)
 
-Otherwise, if `DEBUG=False`, we will see this instead.
+Otherwise, if we set `DEBUG=False`, we will see this instead.
 ![404 Debug=False](https://i.postimg.cc/Z0zdn48r/DEBUG-FALSE-DEFAULT-404-Page-2021-02-22-19-34-56.jpg)
 
-In a production setting, the default `404` page can be replaced by a custom template. Django requires that we name this template **404.html** and recommends that it be placed in the _root template directory_. This is the **templates** subdirectory residing in the inner project directory.  
+We typically disable debugging in a production site and Django provides a standard `404` page like the one above for us.
+The good news is we can replace the default `404` page with a custom template. Django requires that we name this template **404.html** and  that we place it in the _root template directory_. This is the **templates** subdirectory residing in the inner project directory.  
 ```
 myproject
    |--myapp
@@ -37,7 +38,7 @@ TEMPLATES = [
     },
 ]
 ```
-Notice in the above example that the `DIRS` key is assigned a concatenated string of the `BASE_DIR` value and `myproject/templates`.
+Notice in the above example that the `DIRS` key is assigned a concatenated string of the `BASE_DIR` value and `myproject/templates`. After restarting our Django server and entering an invalid url on our browser, we will see our custom `404` page displayed.
 
 ![Custom 404 Page](https://i.postimg.cc/wMH5RtbF/project-404-2021-02-22-19-12-07.jpg)
 
