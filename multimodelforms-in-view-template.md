@@ -57,8 +57,9 @@ class PersonDetailView(DetailView):
         context['tasks_due_today'] = person.tasks_due_today()
         return context
 ```
+The `PersonDetailView` passes the information stored in `context` to the template, **person_detail.html**. The template extracts the information it needs from `context` and formats them accordingly for display.
 
-Focus on the red highlighted box where three pencil icons, ![pencil icon](https://i.postimg.cc/26zmDF6K/pencil.png), appear next to three field instances, `Raya`, `Project Manager` and `raya@djangoschool.com`. 
+Focus on the red highlighted box in the screenshot above where three pencil icons, ![pencil icon](https://i.postimg.cc/26zmDF6K/pencil.png), appear next to three field instances, `Raya`, `Project Manager` and `raya@djangoschool.com`. 
 
 ## Updating Person Model
 
