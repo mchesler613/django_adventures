@@ -1,12 +1,140 @@
-# Adventures in Django: Displaying and Editing Multiple ModelForms in View and Template
+# Adventures in Django: Editing A Single Model Instance with UpdateView
 
 In my last article, [Leveraging OO in Models and Views](https://merilynchesler.medium.com/adventures-in-django-leveraging-oo-in-models-and-views-c95bc7e4f37c), I described how we can maximize object-oriented programming in implementing custom behavior in our Django models to hide [model-specific QuerySet API](https://docs.djangoproject.com/en/3.1/ref/models/querysets/) and to take advantage of Django's class-based generic views, such as [`DetailView`](https://docs.djangoproject.com/en/3.1/topics/class-based-views/generic-display/) to reuse code and minimize development time. 
 
-Recall that in Django's MTV (Model-Template-View) architecture, the model is the central component encapsulating data and behavior, the view defines _which_ data from the model will be presented to the user and the template takes over _how_ the data from the view will be presented in HTML. A typical application not only presents read-only data, but also lets a user create new data and update existing data. Creating and updating information is typically done in an [HTML Form](https://developer.mozilla.org/en-US/docs/Learn/Forms) which is encapsulated inside the `<form>...</form>` tag. Django facilitates data collection in a [`Form`](https://docs.djangoproject.com/en/3.1/topics/forms/#the-django-form-class) class. In this article, I'm going to document:
-+ how to leverage Django's [`ModelForm`](https://docs.djangoproject.com/en/3.1/topics/forms/modelforms/#django.forms.ModelForm) class which maps a model's fields to an HTML `Form`'s input elements in our demo application
-+ how to display multiple `ModelForm`s in a view and template
-+ how to edit multiple `ModelForm`s in a view and template
-We have a lot to cover, so, let's get started.
+Recall that in Django's MTV (Model-Template-View) architecture, the model is the central component encapsulating data and behavior, the view defines _which_ data from the model will be presented to the user and the template takes over _how_ the data from the view will be presented in HTML. A typical application not only presents read-only data, but also lets a user create new data and update existing data. Creating and updating information is typically done in an [HTML Form](https://developer.mozilla.org/en-US/docs/Learn/Forms) which is defined within the `<form>...</form>` tag. Django facilitates data collection in a [`Form`](https://docs.djangoproject.com/en/3.1/topics/forms/#the-django-form-class) class. In this article, I'm going to document how to leverage one of [Django's class-based generic-editing views](https://docs.djangoproject.com/en/3.1/ref/class-based-views/generic-editing/) to update a single model instance. By doing this, we can continue to reuse and reduce coding time.
 
-This application is a sample Django app that lets a user plans tasks and meetings. For this article, we are focusing only on three models, `Person`, `Bio`, and `Email`. `Person` has a one-to-one relationship with `Bio` and `Email`. 
+## Three Models
+We continue to use a demo Django app that lets a user plans tasks and meetings. For this article, we are focusing only on three models, `Person`, `Bio`, and `Email`. `Person` has a one-to-one relationship with `Bio` and `Email`.
+![Three Models.png](https://i.postimg.cc/KjM0pCbS/Models.png)
+The code that describes these models are as follows:
 <script src="https://gist.github.com/mchesler613/d7a15eab07f15015249bb0298903bb39.js"></script>
+```py
+# Person has one-to-one relationship with Email and Bio
+class Person(models.Model):
+  STATUS = [
+      ('AWAY', 'I am away'),
+      ('BUSY', 'I am busy'),
+      ('MEETING', 'I am in a meeting'),
+      ('IDLE', 'I am available')
+  ]
+
+  name = models.CharField(max_length=20)
+  status = models.CharField(max_length=10, choices=STATUS, default='IDLE')
+  age = models.IntegerField(default=0)
+  ...
+    
+# Bio has a one-to-one relationship with Person, but can be NULL
+class Bio(models.Model):
+  bio = models.TextField()
+  image = models.URLField()
+  person = models.OneToOneField(Person, on_delete=models.CASCADE)
+  ...
+
+# Email has one-to-one relationship with Person
+class Email(models.Model):
+  address = models.EmailField()
+  person = models.OneToOneField(Person, on_delete=models.CASCADE)
+  ...
+```
+Selected fields of these three models can be viewed in `PersonDetailView`, a subclass of [`DetailView`](https://docs.djangoproject.com/en/3.1/ref/class-based-views/generic-display/#detailview) that belongs to Django's class-based generic display views.
+
+![Model's Detail View](https://i.postimg.cc/ZKB7Czt8/Single-Model-Form-Edit-2021-02-27-22-19-59.jpg)
+
+Recall that the code for `PersonDetailView` is:
+```py
+from django.views.generic.detail import DetailView
+from planner.models import Person, Bio, Email
+
+class PersonDetailView(DetailView):
+    template_name = "planner/person_detail.html"
+    model = Person
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        person = get_object_or_404(Person,pk=self.kwargs['pk'])
+        context['meetings_today'] = person.meetings_today()
+        context['tasks_due_today'] = person.tasks_due_today()
+        return context
+```
+
+Focus on the red highlighted box where three pencil icons, ![pencil icon](https://i.postimg.cc/26zmDF6K/pencil.png), appear next to three field instances, `Raya`, `Project Manager` and `raya@djangoschool.com`. 
+
+## Updating Person Model
+
+Clicking on the pencil icon next to `Raya` will bring us to a template containing a form for editing a single model instance. This form is generated by a special view, `PersonUpdateView`, corresponding to the `Person` model instance for `Raya`.
+
+![Person UpdateView for Raya](https://i.postimg.cc/3RCq3P6X/Person-Model-Form-2021-02-27-22-58-29.jpg)
+
+Notice that the three HTML input elements correspond to the `Person` model fields of `name`, `status` and `age`.  This is made possible by defining `PersonUpdateView` as a subclass of Django's [`UpdateView`](https://docs.djangoproject.com/en/3.1/ref/class-based-views/generic-editing/#updateview), a generic editing view that displays a form for editing an existing model instance. 
+```py
+from django.views.generic.edit import UpdateView
+from planner.models import Person, Bio, Email
+
+class PersonUpdateView(UpdateView):
+    model = Person
+    fields = '__all__'
+    template_name_suffix = '_update_form'
+```
+In the code example above, we define the `model` that this view corresponds to (`Person`), select all the fields of the model that we want to display by assigning `__all__` to `fields` and provide a suffix name, `_update_form`, to `template_name_suffix`. By default, Django will use a template whose suffix is `_form` and the full template name for updating the `Person` model would be **person_form.html**. By providing an explicit suffix of `_update_form`, we are telling Django to expect a template whose name is **person_update_form.html** instead.
+
+The URL path corresponding to this view is defined in the app's **urls.py** file. For example:
+```py
+urlpatterns = [
+    ...
+    path('person/edit/<int:pk>/', PersonUpdateView.as_view(), name='person_update_form'),
+```
+Notice that `pk` is the primary key associated with the `Person` model instance. We chose to name our URL pattern to coincide with the template name, `person_update_form`.
+
+## Updating Bio Model
+
+Clicking on the pencil icon next to `Project Manager` will bring us to another form generated by `BioUpdateView`, a subclass of Django's `UpdateView` as well.
+![Bio Update View for Raya](https://i.postimg.cc/zG2RhXLd/Bio-Update-View-2021-02-27-22-59-30.jpg)
+
+Notice that the two HTML input elements on the form correspond to the `Bio` model fields of `bio` and `image`. Let's take a look at the content of `BioUpdateView`.
+```py
+class BioUpdateView(UpdateView):
+    model = Bio
+    fields = ['bio', 'image']
+    template_name_suffix = '_update_form'
+```
+We assign the model `Bio` to `model` and explicitly define the template name to have a suffix of `_update_form`. But unlike `PersonUpdateView`, we only want to display selected fields, `bio` and `image`. If we had assigned `__all__` to `fields`, the form returned by the view will also include a list of `Person` model instances because there is a `OneToOneField` (`person`) in the `Bio` model that is related to `Person`. Since we only want to relate the `bio` and `image` fields to `Raya` and not to another `Person` model instance, we restrict the fields we want to display in `fields`.
+
+![Alternate Bio UpdateView for Raya](https://i.postimg.cc/brF4ftVX/Bio-Update-View-All-2021-02-28-0-05-33.jpg)
+
+The URL path corresponding to this view is defined in the app's **urls.py** file. For example:
+```py
+urlpatterns = [
+    ...
+    path('bio/edit/<int:pk>/', BioUpdateView.as_view(), name='bio_update_form'),
+```
+The URL pattern in `BioUpdateView` follows the same convention as the one in `PersonUpdateView`.
+
+## Update Email Model
+
+Clicking on the pencil icon next to `raya@djangoschool.com` will lead us to a form generated by `EmailUpdateView`, another subclass of Django's `UpdateView`.
+![Email UpdateView for Raya](https://i.postimg.cc/dVvQHMC8/Email-Update-View-2021-02-27-23-00-00.jpg)
+
+Notice that the only HTML input element on the form corresponds to the `address` field of the `Email` model. The content of `EmailUpdateView` is as follows.
+```py
+class EmailUpdateView(UpdateView):
+    model = Email
+    fields = ['address']
+    template_name_suffix = '_update_form'
+```
+Like `BioUpdateView`, we explicitly name the field we want to display on the form. We assign `address` (instead of `__all__`) to `fields` to hide the `OneToOneField` (`person`) in `Email` which would display a select list of `Person` model instances in the form. We define the `model` to be `Email` and override the template's default name to have a suffix of `_update_form`.
+
+The URL path corresponding to this view is defined in the app's **urls.py** file. For example:
+```py
+urlpatterns = [
+    ...
+    path('email/edit/<int:pk>/', EmailUpdateView.as_view(), name='email_update_form'),
+```
+The URL pattern in `EmailUpdateView` follows the same convention as the one in `PersonUpdateView`.
+
+## Conclusion
+
+Django provides helpful class-based generic views for both displaying and editing models, such as `DisplayView` and `UpdateView` respectively. Using these views shorten the amount of code that we need to write and I would highly recommend using these views whenever possible.
+
+In the next article, I will address a situation where we want to combine editing the model instances together on the same template instead of three separate ones. Hope to see you there and thanks for reading.
+
