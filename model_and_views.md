@@ -13,7 +13,7 @@ I'm going to highlight the five Django models that are involved in this app -- `
 ![Model Relationships](https://i.postimg.cc/QCyHRWHh/Model-Relationships.png)
 
 ## MTV Revisited
-Let's revisit the MTV (Model-Template-View) paradigm that Django is based on. Recall that the model is the central component encapsulating data and behavior, the view defines which data from the model is to be presented to the user and the template defines how data from the model is presented to the user.
+Let's revisit the MTV (Model-Template-View) paradigm that Django is based on. Recall that the model is the central component encapsulating data and behavior, the view defines which data from the model is to be presented to the user and the template defines how data from the view is presented to the user.
 
 ![Model-Template-View](https://i.postimg.cc/3NNSyhtn/Model-Template-View.png)
 
