@@ -152,54 +152,53 @@ In pseudocode, our steps to execute are as follows:
 
 For example:
 ```py
- def post(self, request, *args, **kwargs):
-        # retrieve the primary key from url
-        pk = self.kwargs['pk']
-
-        # retrieve the Person model instance based on pk
-        person = get_object_or_404(Person, pk=pk)
-
-        # create a PersonForm based on person and form data
-        person_form = PersonForm(instance=person, data=request.POST)
-
-        # retrieve the Bio model instance based on person's pk
-        bio = get_object_or_404(Bio, person__pk=pk)
-
-        # create a BioForm based on bio and form data
-        bio_form = BioForm(instance=bio, data=request.POST)
-
-        # retrieve the Email model instance based on person's pk
-        email = get_object_or_404(Email, person__pk=pk)
-
-        # create a EmailForm based on email and form data
-        email_form = EmailForm(instance=email, data=request.POST)
-
-        # if the save_person button is pressed
-        if 'save_person' in request.POST:
-            if person_form.is_bound and person_form.is_valid():
-                person_form.save()
-
-                messages.add_message(request, messages.SUCCESS, "%d %s %d %s" %(person.pk, person.name, person.age, person.status))
-            else:
-                messages.error(request, person_form.errors)
-
-        # if the save_bio button is pressed
-        elif 'save_bio' in request.POST:
-            if bio_form.is_bound and bio_form.is_valid():
-                bio_form.save()
-                messages.add_message(request, messages.SUCCESS, '%d %s %s saved' %(bio.person.pk, bio.bio, bio.image))
-            else:
-                messages.error(request, bio_form.errors)
-
-        # if the save_email button is pressed
-        elif 'save_email' in request.POST:
-            if email_form.is_bound and email_form.is_valid():
-                email_form.save()
-                messages.add_message(request, messages.SUCCESS, '%d %s' %(email.person.pk, email.address))
-            else:
-                messages.error(request, email_form.errors)
-                
-        return HttpResponseRedirect(reverse('planner:person_detail_update_form', kwargs={'pk': self.kwargs['pk']}))
+def post(self, request, *args, **kwargs):
+  # retrieve the primary key from url
+  pk = self.kwargs['pk']
+  
+  # retrieve the Person model instance based on pk
+  person = get_object_or_404(Person, pk=pk)
+  
+  # create a PersonForm based on person and form data
+  person_form = PersonForm(instance=person, data=request.POST)
+  
+  # retrieve the Bio model instance based on person's pk
+  bio = get_object_or_404(Bio, person__pk=pk)
+  
+  # create a BioForm based on bio and form data
+  bio_form = BioForm(instance=bio, data=request.POST)
+  
+  # retrieve the Email model instance based on person's pk
+  email = get_object_or_404(Email, person__pk=pk)
+  
+  # create a EmailForm based on email and form data
+  email_form = EmailForm(instance=email, data=request.POST)
+  
+  # if the save_person button is pressed
+  if 'save_person' in request.POST:
+    if person_form.is_bound and person_form.is_valid():
+      person_form.save()
+      messages.add_message(request, messages.SUCCESS, "%d %s %d %s" %(person.pk, person.name, person.age, person.status))
+    else:
+      messages.error(request, person_form.errors)
+  
+  # if the save_bio button is pressed
+  elif 'save_bio' in request.POST:
+    if bio_form.is_bound and bio_form.is_valid():
+      bio_form.save()
+      messages.add_message(request, messages.SUCCESS, '%d %s %s saved' %(bio.person.pk, bio.bio, bio.image))
+    else:
+      messages.error(request, bio_form.errors)
+  
+  # if the save_email button is pressed
+  elif 'save_email' in request.POST:
+    if email_form.is_bound and email_form.is_valid():
+      email_form.save()
+      messages.add_message(request, messages.SUCCESS, '%d %s' %(email.person.pk, email.address))
+    else:
+      messages.error(request, email_form.errors)
+        
+  return HttpResponseRedirect(reverse('planner:person_detail_update_form', kwargs={'pk': self.kwargs['pk']}))
 ```
 ## Conclusion
 
