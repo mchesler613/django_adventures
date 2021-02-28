@@ -83,6 +83,7 @@ The URL path corresponding to this view is defined in the app's **urls.py** file
 urlpatterns = [
     ...
     path('person/edit/<int:pk>/', PersonUpdateView.as_view(), name='person_update_form'),
+]
 ```
 Notice that `pk` is the primary key associated with the `Person` model instance. We chose to name our URL pattern to coincide with the template name, `person_update_form`.
 
@@ -107,6 +108,7 @@ The URL path corresponding to this view is defined in the app's **urls.py** file
 urlpatterns = [
     ...
     path('bio/edit/<int:pk>/', BioUpdateView.as_view(), name='bio_update_form'),
+]
 ```
 The URL pattern in `BioUpdateView` follows the same convention as the one in `PersonUpdateView`.
 
@@ -129,6 +131,7 @@ The URL path corresponding to this view is defined in the app's **urls.py** file
 urlpatterns = [
     ...
     path('email/edit/<int:pk>/', EmailUpdateView.as_view(), name='email_update_form'),
+]
 ```
 The URL pattern in `EmailUpdateView` follows the same convention as the one in `PersonUpdateView`.
 
