@@ -203,4 +203,4 @@ For example:
 ```
 ## Conclusion
 
-This example illustrates a common use-case of an application that needs to collect data from multiple forms in a webpage. By leveraging Django's generic base views such as `TemplateView` and `ModelForm` class, we are able to implement a clean solution.  If you have any questions, please comment below. Otherwise, thank you for reading and happy Django!
+This article illustrates a common use-case of an application that needs to collect data from multiple forms corresponding to models in a webpage. By leveraging Django's generic base views such as `TemplateView` and `ModelForm` class, we are able to implement a clean solution.  If you have any questions, please comment below. Otherwise, thank you for reading and happy Django!
