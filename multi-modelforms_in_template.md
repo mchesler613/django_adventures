@@ -100,7 +100,7 @@ urlpatterns = [
 ```
 
 The content of our **person_detail_update_form.html** may look like this:
-```html
+```
 {% extends "planner/base.html" %}
 {% block title %}{{ title }}{% endblock title %}
 {% block content %}
