@@ -5,11 +5,11 @@ relative_links:
   enabled: true
   collections: true
 include:
-  - CONTRIBUTING.md
+  - 404_templates.md
   - README.md
-  - LICENSE.md
-  - COPYING.md
-  - CODE_OF_CONDUCT.md
+  - model_views.md
+  - model_relationships.md
+  - multi-modelforms_in_template.md
   - CONTRIBUTING.md
-  - ISSUE_TEMPLATE.md
-  - PULL_REQUEST_TEMPLATE.md
+  - single-form-in-view-template.md
+ 
