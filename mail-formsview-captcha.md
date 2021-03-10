@@ -76,19 +76,21 @@ class ContactView(FormView):
 
 Next, we need to figure out what to do when our form has been successfully validated. There are basically three tasks we need to accomplish:
 + Send off an email based on our validated form data
-+ Respond to our visitor whether their message has been successfully sent or not
++ Respond to our visitor with an acknowledgement of thanks and a success or fail message
 + Return an Http response
 
-In our view, we want to be able to personalize a thank-you message with the outcome of `send_mail()`. `send_mail()` returns `1` if it is successful and `0` if not. So, we need to be able to pass some data (the web visitor name and the `send_mail()` outcome) to the template as the template is responsible for supplying the custom message. We therefore define the named URL pattern for the success url, `/thanks/`, in **urls.py** as:
+In our view, we would like to personalize a thank-you message with the outcome of `send_mail()`. `send_mail()` returns `1` if it is successful and `0` if not. So, we would like to pass some data (the web visitor name and the `send_mail()` outcome) to the template so that the template can personalize the message. We therefore define the named URL pattern for the success url, `/thanks/`, in **urls.py** as follows:
 
 ```py
 # project urls.py
+from mail.views import ThanksView
+
 urlpatterns = [
     path('thanks/<str:visitor>/<int:success>', ThanksView.as_view(), name='thanks'),
     ...
     ]
 ```
-Notice that we also need another view, `ThanksView`, to process the data it receives when the success url is invoked. But let's focus on `.form_valid()` for now, which will look like this.
+Notice that we also need another view, `ThanksView`, to process the data it receives when the success url is invoked. But let's focus on the `.form_valid()` method for now, which will look like this.
 ```py
   def form_valid(self, form):
     response = form.send_email()
@@ -99,11 +101,11 @@ Notice that we also need another view, `ThanksView`, to process the data it rece
     # Return a Http Response
     return super().form_valid(form)
 ```
-Notice that we call the `.send_email()` method for our `ContactForm` which hasn't yet been defined. Since our `ContactForm` has knowledge of all the fields in the form, it makes sense to delegate the responsibility of sending email to the form instead of the view. 
+Notice that we call the `.send_email()` method for our `ContactForm` which hasn't yet been defined. Since our `ContactForm` contains all the fields in the form, it makes sense to delegate the responsibility of sending email to the form instead of the view. `form.send_email()` will return a value of `0` (fail) or `1` (success) which is saved in `response`.
 
-Next we need to redefine the `success_url` because it is expecting two keyword arguments in the url pattern, `thanks/<str:sender>/<int:success>`. We call the [`reverse()`](https://docs.djangoproject.com/en/3.1/ref/urlresolvers/#django.urls.reverse) function with the named url pattern, `thanks`, and the keyword argument dictionary, `kwargs` with key-value pairs for `visitor` and `success`. When a form has been validated, its field names and values are available in [`cleaned_data`](https://docs.djangoproject.com/en/3.1/ref/forms/api/#django.forms.Form.cleaned_data), a Python dictionary. So we assign `visitor` the `cleaned_data` value for the `name` form field and `success` the value of `response`, which is the return value of calling the form's `.send_email()` method.
+Next we need to redefine the `success_url` because it is expecting two keyword arguments in the url pattern, `thanks/<str:sender>/<int:success>`. We call the [`reverse()`](https://docs.djangoproject.com/en/3.1/ref/urlresolvers/#django.urls.reverse) function with the named url pattern, `thanks`, and the keyword argument dictionary, `kwargs` with key-value pairs for `visitor` and `success`. When a form has been validated, its field names and values are available in [`cleaned_data`](https://docs.djangoproject.com/en/3.1/ref/forms/api/#django.forms.Form.cleaned_data), a Python dictionary of key-value pairs. So we assign the `visitor` key the `cleaned_data` value for the `name` form field and the `success` key the value of `response`.
 
-Lastly, we return a Http response by calling the parent's `.form_valid()` method. Before we write the `.send_email()` method for our `ContactForm`, we will tackle understanding the Django's `send_mail()` API.
+Lastly, we return a Http response by calling the parent's `.form_valid()` method. Before we write the `.send_email()` method for our `ContactForm`, we will first tackle understanding the Django's `send_mail()` API.
 
 ## Django send_mail() API
 
@@ -132,7 +134,9 @@ Notice that there are configuration variables that Django expects to be defined 
 + ssl_keyfile: [EMAIL_SSL_KEYFILE](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-EMAIL_SSL_KEYFILE)
 + ssl_certfile: [EMAIL_SSL_CERTFILE](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-EMAIL_SSL_CERTFILE)
 
-It is not advisable to store sensitive information inside **settings.py** such as passwords. One option is to export sensitive data as environment variables and retrieve them in **settings.py**. For example, to export an environment variable, type in the terminal:
+The `EMAIL_HOST` has to be a legitimate SMTP server with a valid email account capable of sending and receiving email messages. If you own a shared hosting account on one of the popular [web hosting providers](https://en.wikipedia.org/wiki/Web_hosting_service), you will be able to purchase a domain, create an email account and utilize your domain's SMTP service. 
+
+Please note that you shouldn't store sensitive information inside **settings.py** such as passwords. One option is to export sensitive data as environment variables and retrieve them in **settings.py**. For example, to export an environment variable, `EMAIL_HOST_PASSWORD`, type in the terminal:
 ```
 $ export EMAIL_HOST_PASSWORD=your_secret_password
 ```
@@ -148,8 +152,8 @@ EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 
 We can add behavior to our `ContactForm` by allowing it to send email when a form has been submitted and validated. We can add a `send_email()` method that accomplishes the following:
 + Configure the subject of the mail.
-+ Read the values from the validated fields in `.cleaned_data` and save them as variables.
-+ Configure the body of the mail based on the form data.
++ Read the values from the validated form fields in `.cleaned_data` and save them as variables.
++ Configure the body of the mail based on the saved cleaned data.
 + Configure the sender of the email. If we use Django's `send_mail()`, the sender should be set to the value found in `settings.EMAIL_HOST_USER`.
 + Configure the receipient(s) of the email. This can be a single receipient or a list.
 + Lastly, we call Django's `send_mail()` API with our subject, body, sender, and receipient list.
@@ -233,4 +237,4 @@ Developing our contact page with Django using the `FormView` is not as straightf
 + We need to determine how to pass some of the cleaned data to the `thanks.html` template to form a personalized message. By formatting the `thanks` URL pattern to take arguments, we can retrieve these arguments in our `TemplateView` and store them in a context dictionary. 
 + We need to decide where to place the logic of sending email. Should it be the responsibility of the Django view or the Django form? Since the form is knowledgable about its fields and values, it is only natural that the form be the one to format and send email messages through Django's `send_mail()` function. 
 
-Another challenge we have is saving sensitive information like passwords to be utilized by the `send_mail()` API. One solution is to utilize environment variables, but there are other alternatives as well that we can explore sometime in the future. However, the easiest part of this development is deploying Simple Captcha, true to its name! I recommend it! I hope you have found this lengthy tutorial useful enough to continue to Django!
+Another challenge we have is saving sensitive information like passwords to be utilized by the `send_mail()` API. One solution is to utilize environment variables, but there are other alternatives as well that we can explore sometime in the future. However, the easiest part of this development is deploying Simple Captcha, true to its name! I hope you have found this lengthy tutorial useful enough to continue to Django!
