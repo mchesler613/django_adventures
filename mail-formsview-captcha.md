@@ -189,7 +189,7 @@ class ContactForm(forms.Form):
         sender,
         [receipient],
         fail_silently=False,
-        #auth_user='bad_user',  # uncomment this line to test for a failed send_mail()
+        #auth_user='no_such_user',  # uncomment this line to test for a failed send_mail()
       )
     except smtplib.SMTPException:
       pass
