@@ -1,5 +1,5 @@
 # Adventures in Django: Django Mail with FormView and Simple Captcha
-
+![Cover Image](https://i.postimg.cc/dtx47yXH/Django-Mail-Form-View-Simple-Captcha.png)
 It's common in most websites to allow visitors to interact with them through an [HTML Form](https://developer.mozilla.org/en-US/docs/Learn/Forms). To distinguish a human visitor from a machine or bot, a [captcha](https://en.wikipedia.org/wiki/CAPTCHA) challenge is typically included in the form as well. Some of these forms facilitate communication between a visitor and the website. Submitting one of these forms usually trigger an email to be sent to a specific address. Django provides an easy-to-use `send_mail()` API to send data over the [`SMTP`](https://en.wikipedia.org/wiki/Simple_Mail_Transfer_Protocol) protocol. In this article, I'm going to show how to create an HTML Form using Django's `FormView` class with [_Simple Captcha_](https://django-simple-captcha.readthedocs.io/en/latest/usage.html#) and the `send_mail()` API. Let's get started.
 
 ## Install Simple Captcha
@@ -233,4 +233,4 @@ Developing our contact page with Django using the `FormView` is not as straightf
 + We need to determine how to pass some of the cleaned data to the `thanks.html` template to form a personalized message. By formatting the `thanks` URL pattern to take arguments, we can retrieve these arguments in our `TemplateView` and store them in a context dictionary. 
 + We need to decide where to place the logic of sending email. Should it be the responsibility of the Django view or the Django form? Since the form is knowledgable about its fields and values, it is only natural that the form be the one to format and send email messages through Django's `send_mail()` function. 
 
-Another challenge we have is saving sensitive information like passwords to be utilized by the `send_mail()` API. One solution is to utilize environment variables, but there are other alternatives as well that we can explore sometime in the future. I hope you have found this lengthy tutorial useful and happy Django!
+Another challenge we have is saving sensitive information like passwords to be utilized by the `send_mail()` API. One solution is to utilize environment variables, but there are other alternatives as well that we can explore sometime in the future. However, the easiest part of this development is deploying Simple Captcha, true to its name! I recommend it! I hope you have found this lengthy tutorial useful enough to continue to Django!
