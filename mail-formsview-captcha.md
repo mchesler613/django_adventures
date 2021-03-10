@@ -146,7 +146,7 @@ To retrieve `EMAIL_HOST_PASSWORD` in **settings.py** use `os.getenv()`. For exam
 import os
 EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD')
 ```
-<u>Remember to restart the Django server after you have exported your environment variables otherwise the variables will be undefined!</u>
+**Remember to restart the Django server after you have exported your environment variables otherwise the variables will be undefined!**
 
 ## Add a send_email() Method to the Form
 
