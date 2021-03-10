@@ -183,16 +183,16 @@ class ContactForm(forms.Form):
     response = 0
 
     try:
-        response = send_mail(
-            subject,
-            body,
-            sender,
-            [receipient],
-            fail_silently=False,
-            #auth_user='bad_user',  # uncomment this line to test for a failed send_mail()
-        )
+      response = send_mail(
+          subject,
+          body,
+          sender,
+          [receipient],
+          fail_silently=False,
+          #auth_user='bad_user',  # uncomment this line to test for a failed send_mail()
+      )
     except smtplib.SMTPException:
-        pass
+      pass
 
     return response
 ```
