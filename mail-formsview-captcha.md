@@ -122,12 +122,12 @@ send_mail(
 )
 ```
 Notice that there are configuration variables that Django expects to be defined in **settings.py** such as `EMAIL_HOST_USER` and `EMAIL_HOST_PASSWORD`. But the complete listing is as follows:
-+ host: EMAIL_HOST for example, [smtp.gmail.com](https://support.google.com/a/answer/176600)
-+ port: EMAIL_PORT for example, (TLS): 587 or (SSL): 465
-+ username: EMAIL_HOST_USER, for example, you@gmail.com
-+ password: EMAIL_HOST_PASSWORD, for example, your Gmail account password
-+ use_tls: EMAIL_USE_TLS, True or False
-+ use_ssl: EMAIL_USE_SSL, True or False
++ host: EMAIL_HOST for example, `smtp.yourdomain.com`
++ port: EMAIL_PORT for example, (TLS): `587` or (SSL): `465`
++ username: EMAIL_HOST_USER, for example, `you@yourdomain.com`
++ password: EMAIL_HOST_PASSWORD, for example, your `you@yourdomain.com` account password
++ use_tls: EMAIL_USE_TLS, `True` or `False`
++ use_ssl: EMAIL_USE_SSL, `True` or `False`
 + timeout: [EMAIL_TIMEOUT](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-EMAIL_TIMEOUT)
 + ssl_keyfile: [EMAIL_SSL_KEYFILE](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-EMAIL_SSL_KEYFILE)
 + ssl_certfile: [EMAIL_SSL_CERTFILE](https://docs.djangoproject.com/en/3.1/ref/settings/#std:setting-EMAIL_SSL_CERTFILE)
