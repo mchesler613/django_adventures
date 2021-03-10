@@ -37,7 +37,7 @@ class ContactForm(forms.Form):
   message = forms.CharField(widget=forms.Textarea)
   captcha = CaptchaField()
 ```
-Notice that we added a `captcha` field from Simple Captcha's `captcha.fields` module. Here is a sample of what a contact form looks like.
+Notice that we added a `captcha` field from Simple Captcha's `captcha.fields` module. Here is a sample contact form.
 
 ![Blank Contact Form](https://i.postimg.cc/85TP2pgL/Blank-Contact-Form-2021-03-10-1-01-05.jpg)
 
