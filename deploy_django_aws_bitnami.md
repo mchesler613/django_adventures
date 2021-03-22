@@ -23,9 +23,9 @@ daemon   26525 26520  0 16:17 ?        00:00:01 /opt/bitnami/apache/bin/httpd -f
 daemon   26526 26520  0 16:17 ?        00:00:00 /opt/bitnami/apache/bin/httpd -f /opt/bitnami/apache/conf/httpd.conf
 daemon   26527 26520  0 16:17 ?        00:00:00 /opt/bitnami/apache/bin/httpd -f /opt/bitnami/apache/conf/httpd.conf
 ```
-Since we ran the apache server as `sudo`, we will find that multiple server processes. One is owned by `root` and the others by the user `daemon`. `daemon` as defined by [Linux](https://www.man7.org/linux/man-pages/man7/daemon.7.html) is a service process that operates in the background servicing other processes. There is also a `daemon` [user and group](https://refspecs.linuxbase.org/LSB_3.0.0/LSB-PDA/LSB-PDA/usernames.html#TBL-REQUIREDUSERS) associated with this process. 
+Since we ran the apache server as `sudo`, we will find multiple server processes - One that is owned by `root` and the others by the user `daemon`. `daemon` as defined by [Linux](https://www.man7.org/linux/man-pages/man7/daemon.7.html) is a service process that operates in the background servicing other processes. There is also a `daemon` [user and group](https://refspecs.linuxbase.org/LSB_3.0.0/LSB-PDA/LSB-PDA/usernames.html#TBL-REQUIREDUSERS) associated with this process. 
 
-When we deployed Django on AWS, we were logged in as the user, `bitnami`. In order for our default database, for example, `db.sqlite3`, to be accessed and written by the apache server, it has to have `read` and `write` permissions by the `daemon` group. In addition, the project root directory needs to be writeable by `daemon` as well. So, we will have to do two things:
+When we deployed Django on AWS, we were logged in as the user, `bitnami`. To enable the `daemon` process to read from and write to our default database, we need to configure the read and write permissions to the database file. To get to the database file, the `daemon` process also needs the same permissions for the project root directory. So, we will have to do two things:
 1. Change group ownership of the project root directory and the database file to `daemon`. For example:
 ```
 $ sudo chgrp daemon project_directory project_directory/database_file
@@ -91,7 +91,7 @@ Notice the last line that includes the **bitnami-ssl.conf** file. If we secure o
 
 ## Obtain a Static IP address for our Django Server
 
-When we first created a Lightsail instance on AWS, we were given an IP address. For example:
+When we first created a Lightsail instance on AWS, we were given an IP address, for example, 192.0.2.143.
 ![IP Address](https://d1.awsstatic.com/LightsailAssets/django10.3a7d2a117c080dc690baa9c471a1baad26ad89ba.png)
 
 Note that this IP address is temporary and will change each time we reboot the instance. This would mean we have to update the `ALLOWED_HOSTS` variable in our project **settings.py** file each time the IP address changes per reboot. 
@@ -104,13 +104,13 @@ ALLOWED_HOSTS = ['192.0.2.143']
 ```
 we can do this:
 ```py
-ALLOWED_HOSTS = 'example.com'
+ALLOWED_HOSTS = 'awesomedjango.com'
 ```
 
 Consult this other AWS [tutorial](https://lightsail.aws.amazon.com/ls/docs/en_us/articles/lightsail-create-static-ip) to set up a static IP address.
 
 ## Restarting the Apache Server
-Unlike the development Django server, the production Apache server does not automatically detect changes that we make in the Django configuration or application. We need to restart the Aoache server in order for our changes to take effect. For example:
+Unlike the development Django server, the production Apache server does not automatically detect changes that we make in the Django configuration or application. We need to restart the Apache server for our changes to take effect. For example:
 ```
 $ sudo /opt/bitnami/ctlscript.sh restart apache
 ```
