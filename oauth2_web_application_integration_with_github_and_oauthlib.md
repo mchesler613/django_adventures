@@ -382,4 +382,4 @@ def logout_request(request):
 
 With both `oauthlib` and `requests`, we can implement an OAuth2 Web Application flow in a Django app that integrates with a third-party provider such as GitHub. Although we can also use Django packages that are built using these Python packages and are well-integrated with many third-party providers, implementing an OAuth2 client ourself is more educational and satisfying. 
 
-A demo app based on this article is available [here](https://aws.djangodemo.com/auth) if you would like to test it out.
+A demo app based on this article is available [here](https://aws.djangodemo.com/auth) if you would like to test it out. Thanks for reading and Happy Django!
