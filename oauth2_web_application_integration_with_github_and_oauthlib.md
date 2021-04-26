@@ -366,7 +366,7 @@ class HomeView(TemplateView):
 
 ## Logout View
 
-The logout view should log the current authenticated user out of the Django app. Its name should not be the same as the Django `logout()` function, otherwise the app will crash due to stack overflow.
+The logout view should log the current authenticated user out of the Django app. Its name should not be the same as the Django `logout()` function, otherwise the app will crash due to infinite recursion and stack overflow.
 
 The view can display a confirmation message that the user has been logged out and render a home page. For example:
 
