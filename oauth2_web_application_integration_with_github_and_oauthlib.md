@@ -177,7 +177,7 @@ def github_login(request):
 ```py
    request.session['state'] = secrets.token_urlsafe(16)
 ```
-+ We will call [`client.prepare_request_uri()`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/webapplicationclient.html?highlight=prepare_request_body(#oauthlib.oauth2.WebApplicationClient.parse_request_uri_response) method to prepare a complete URL to redirect using the `authorization_url`, `redirect_uri`, `scope`, `state` and `allow_signup` variables. In this example, we limit the `scope` to `read:user` (read-only public user profile) and disable new GitHub account registrations by setting `allow_signup` to `'false'`. We will save the return value of this call in `url`. 
++ We will call [`client.prepare_request_uri()`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/webapplicationclient.html?highlight=prepare_request_body(#oauthlib.oauth2.WebApplicationClient.parse_request_uri_response)) method to prepare a complete URL to redirect using the `authorization_url`, `redirect_uri`, `scope`, `state` and `allow_signup` variables. In this example, we limit the `scope` to `read:user` (read-only public user profile) and disable new GitHub account registrations by setting `allow_signup` to `'false'`. We will save the return value of this call in `url`. 
 
 ```py
    authorization_url = 'https://github.com/login/oauth/authorize'
