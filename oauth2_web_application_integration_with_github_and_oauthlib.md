@@ -109,7 +109,7 @@ This is a sample page of our app that contains content that only an authenticate
 
 ## Integration with OAuthLib and Requests
 
-To integrate our Django app with oauthlib, we need to install the package.
+To integrate our Django app with `oauthlib`, we need to install the package.
 
 ```
 $ pip install oauthlib
