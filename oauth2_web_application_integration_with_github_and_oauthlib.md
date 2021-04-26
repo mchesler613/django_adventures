@@ -265,7 +265,7 @@ For security purposes, we should verify that the `state` content is the same as 
    client = WebApplicationClient(client_id)
 ```
 
-+ We will prepare a request body to access the token using the [`client.prepare_request_body`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/webapplicationclient.html?highlight=prepare_request_body(#oauthlib.oauth2.WebApplicationClient.prepare_request_body) method with the variables -- `code`, `redirect_uri`, `client_id`, and `client_secret`.  We will save the return value of this method in `data`.
++ We will prepare a request body to access the token using the [`client.prepare_request_body`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/webapplicationclient.html?highlight=prepare_request_body(#oauthlib.oauth2.WebApplicationClient.prepare_request_body)) method with the variables -- `code`, `redirect_uri`, `client_id`, and `client_secret`.  We will save the return value of this method in `data`.
 
 ```py
    data = client.prepare_request_body(
