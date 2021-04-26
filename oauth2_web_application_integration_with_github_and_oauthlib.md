@@ -211,7 +211,7 @@ In this view, we will be doing several exciting things, among them:
 + exchanging this code with an access token from GitHub
 + retrieving user profile data from GitHub
 + creating a Django user or retrieving an existing user
-+ log the user in
++ logging the user in
 + redirecting to a welcome view
 
 Let's get started. 
