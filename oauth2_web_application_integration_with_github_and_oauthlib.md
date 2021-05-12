@@ -265,7 +265,7 @@ For security purposes, we should verify that the `state` content is the same as 
    client = WebApplicationClient(client_id)
 ```
 
-+ We will prepare a request body to access the token using the [`client.prepare_request_body`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/baseclient.html?highlight=parse_request_body_response#oauthlib.oauth2.Client.parse_request_body_response) method with the variables -- `code`, `redirect_uri`, `client_id`, and `client_secret`.  We will save the return value of this method in `data`.
++ We will prepare a request body to access the token using the [`client.prepare_request_body`](https://oauthlib.readthedocs.io/en/latest/oauth2/clients/webapplicationclient.html#oauthlib.oauth2.WebApplicationClient.prepare_request_body) method with the variables -- `code`, `redirect_uri`, `client_id`, and `client_secret`.  We will save the return value of this method in `data`.
 
 ```py
    data = client.prepare_request_body(
@@ -281,7 +281,7 @@ Next, we will post a request at GitHub's `token_url` by calling the [`requests.p
     response = requests.post(token_url, data=data)
 ```
 
-+ To make the response manageable as a Python dictionary, we call  [`client.parse_request_body_response()`]()with  `response.text`
++ To make the response manageable as a Python dictionary, we call  [`client.parse_request_body_response()`](https://oauthlib.readthedocs.io/en/latest/_modules/oauthlib/oauth2/rfc6749/clients/base.html#Client.parse_request_body_response)with  `response.text`
 
 ```py
     client.parse_request_body_response(response.text)
